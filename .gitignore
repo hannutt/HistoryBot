@@ -3,3 +3,7 @@ data.txt
 db.sqlite3
 db.sqlite3-wal
 db.sqlite3-shm
+database.sqlite3
+database.sqlite3-shm
+database.sqlite3-wal
+__pycache__/Cbot.cpython-313.pyc

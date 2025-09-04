@@ -4,7 +4,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from chatterbot import ChatBot
-chatbot = ChatBot("Historybot")
+from chatterbot.trainers import ListTrainer
+from openai import OpenAI
+
+cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
+             database_uri='sqlite:///database.sqlite3',logic_adapters=["chatterbot.logic.TimeLogicAdapter"])
 
 app=FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -20,11 +24,36 @@ def root(request: Request):
 def botTraining(request: Request):
     return templates.TemplateResponse("trainBot.html", {"request": request,} )
 
-@app.get("/readFile")
+@app.get("/readFile",response_class=HTMLResponse)
+#fpath on samannimisen trainbot.html input kentän sisältö.
 async def readFile(fpath:str):
-    #path.split jakaa polun ja tiedostonnimen omiin osiin.
-    file=os.path.split(fpath)
-    print("data from file ",file[1])
-    return  f'{fpath}'
+    try:
+        dataFile=open(fpath).read()
+        conversations = dataFile.strip().split('\n')
+        trainer=ListTrainer(cbot)
+        trainer.train(conversations)
+        return """
+    <html>
+        <head>
+            <title>Success</title>
+        </head>
+        <body>
+            <h1>Data successfully added to the bot</h1>
+        </body>
+    </html>
+    """
+    except:
+        return """
+    <html>
+        <head>
+            <title>Fail</title>
+        </head>
+        <body>
+            <h1>Something went wrong.</h1>
+        </body>
+    </html>
+    """
+
+   
     
 
