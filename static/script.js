@@ -1,16 +1,16 @@
 function createTextBox(cb) {
     console.log(cb)
     if (cb) {
-        var textBox = document.createElement("textarea")
+        document.getElementById("tbox").hidden=false
         var aiGenerate = document.createElement("button")
         aiGenerate.id = "aiBtn"
+        aiGenerate.setAttribute("class","button-42")
         aiGenerate.textContent = "Generate with AI"
-        textBox.id = "tbox"
-        document.getElementById("dataField").appendChild(textBox)
         document.getElementById("dataField").appendChild(aiGenerate)
+        
     }
     if (cb === false) {
-        document.getElementById("dataField").removeChild(document.getElementById("tbox"))
+        document.getElementById("tbox").hidden=true
         document.getElementById("dataField").removeChild(document.getElementById("aiBtn"))
 
     }

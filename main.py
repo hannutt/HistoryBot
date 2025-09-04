@@ -6,9 +6,12 @@ from fastapi.templating import Jinja2Templates
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from openai import OpenAI
+from dotenv import load_dotenv, dotenv_values 
+load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
              database_uri='sqlite:///database.sqlite3',logic_adapters=["chatterbot.logic.TimeLogicAdapter"])
+
 
 app=FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -23,6 +26,16 @@ def root(request: Request):
 @app.get("/train",response_class=HTMLResponse)
 def botTraining(request: Request):
     return templates.TemplateResponse("trainBot.html", {"request": request,} )
+
+@app.get("/createQuestion",response_class=HTMLResponse)
+def createAiQuestion(request:Request):
+    client = OpenAI(api_key=os.environ.get("apk"),)
+    response = client.responses.create(
+    model="gpt-4o",
+    input="create history question with answer",)
+
+    return templates.TemplateResponse("trainBot.html", {"request": request,"response":response.output_text} )
+    
 
 @app.get("/readFile",response_class=HTMLResponse)
 #fpath on samannimisen trainbot.html input kentän sisältö.
