@@ -17,12 +17,27 @@
             onchange="createTextBox(document.getElementById('createTrainingData').checked)">
     </form>
     <form action="/createQuestion">
-        <div id="dataField">
-            <textarea id="tbox" hidden>{{response}}</textarea>
+        <div id="dataField" hidden>
+            <textarea id="tbox">{{response}}</textarea>
             <br>
-
         </div>
     </form>
+    <form action="/readDraggedFile/{{file}}" method="post" enctype="multipart/form-data">
+    
+                <h2>Upload file</h2>
+                 
+                 <input type="file" id="file" name="file">
+                 <button>Upload file</button>
+            </div>
+
+    </form>
+    <div id="drop-zone" class="drop-zone">
+        <h3>Drag file</h3>
+        <p id="output" name="output"></p>
+
+    </div>
+           
+
     <script src="/static/script.js"></script>
 </body>
 

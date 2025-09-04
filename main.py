@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Form,Request
+from fastapi import FastAPI, Form,Request,UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -35,6 +35,28 @@ def createAiQuestion(request:Request):
     input="create history question with answer",)
 
     return templates.TemplateResponse("trainBot.html", {"request": request,"response":response.output_text} )
+
+@app.post("/readDraggedFile",response_class=HTMLResponse)
+async def uploadDraggedFile(file:UploadFile):
+        file_path = os.getcwd()+"\\"+file.filename
+        try:
+            with open(file_path, "wb") as f:
+                    f.write(file.file.read())
+                    return"""
+                            <html>
+                                <head>
+                                <title>Success</title>
+                                </head>
+                                <body>
+                                <h1>Data successfully added to the bot</h1>
+                                </body>
+                            </html>
+                            """
+        except Exception as e:
+            return {"message": e.args}
+        
+        
+    
     
 
 @app.get("/readFile",response_class=HTMLResponse)

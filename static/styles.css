@@ -34,3 +34,8 @@
 .button-42:hover {
   box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
 }
+.drop-Zone {
+  border: 5px solid blue;
+  width: 200px;
+  height: 100px;
+}
