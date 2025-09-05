@@ -6,7 +6,11 @@ from fastapi.templating import Jinja2Templates
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from openai import OpenAI
-from dotenv import load_dotenv, dotenv_values 
+from dotenv import load_dotenv, dotenv_values
+from mongoconnection import DbConnection
+
+
+
 load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
@@ -14,20 +18,24 @@ cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter'
 
 
 app=FastAPI()
+dbConn=DbConnection()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
+dbConn.connect()
 
 templates = Jinja2Templates(directory="templates")
 
 def listDirs():
      dirs=[]
-     with os.scandir('C:/') as entries:
+     with os.scandir('C:\\') as entries:
         for entry in entries:
-            #lisätään c:\ jokaisen kansion eteen
-            dirs.append("C:\\"+entry.name)
+            #jos läpikäytä alkio on kansio lisätään se dirs listaan
+            if entry.is_dir():
+                #lisätään c:\ jokaisen kansion eteen
+                dirs.append("C:\\"+entry.name)
             #huomaa että return on silmukan ulkopuolella, muuten silmukka tekisin vain yhden kierroksen
             #ja tallentaisi / palauttaisi vain yhden kansion.
         return dirs
+     
      
 
 @app.get("/",response_class=HTMLResponse)

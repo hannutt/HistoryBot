@@ -8,3 +8,4 @@ database.sqlite3-shm
 database.sqlite3-wal
 __pycache__/Cbot.cpython-313.pyc
 .env
+__pycache__/mongoconnection.cpython-313.pyc
