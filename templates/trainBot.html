@@ -2,12 +2,19 @@
 <html>
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <title>Training section</title>
 </head>
 
 <body>
     <h1>Train your bot</h1>
+    <p id="dirs" hidden>{{dirs}}</p>
+    <button onclick="listDirs()">list</button>
+    <button onclick="removeExtraMarks()">clear</button>
     <!--fpath eli input kentän sisältö lähetetään parametrina readfile funktiolle.-->
     <form action="/readFile/{{fpath}}">
         <input type="text" placeholder="filepath" name="fpath" id="fpath">
@@ -22,23 +29,30 @@
             <br>
         </div>
     </form>
-    <form action="/readDraggedFile/{{file}}" method="post" enctype="multipart/form-data">
-    
-                <h2>Upload file</h2>
-                 
-                 <input type="file" id="file" name="file">
-                 <button>Upload file</button>
-            </div>
+    <form action="/uploadFile/{{file}}" method="post" enctype="multipart/form-data">
+
+        <h2>Upload file</h2>
+
+        <input type="file" id="file" name="file">
+        <button>Upload file</button>
+        </div>
 
     </form>
-    <div id="drop-zone" class="drop-zone">
-        <h3>Drag file</h3>
-        <p id="output" name="output"></p>
+    <form action="/uploadDraggedFile/{{output}}" method="post" enctype="multipart/form-data">
+        <div id="drop-zone" class="drop-zone">
+            <h3>Drag file</h3>
+            <p id="output" name="output"></p>
+            <input type="file" id="fileInput" name="fileInput">
+           
+            <button>Upload dragged file</button>
+           
+    </form>
 
     </div>
-           
+
 
     <script src="/static/script.js"></script>
+
 </body>
 
 </html>

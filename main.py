@@ -19,13 +19,25 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+def listDirs():
+     dirs=[]
+     with os.scandir('C:/') as entries:
+        for entry in entries:
+            #lisätään c:\ jokaisen kansion eteen
+            dirs.append("C:\\"+entry.name)
+            #huomaa että return on silmukan ulkopuolella, muuten silmukka tekisin vain yhden kierroksen
+            #ja tallentaisi / palauttaisi vain yhden kansion.
+        return dirs
+     
+
 @app.get("/",response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request,} )
 
 @app.get("/train",response_class=HTMLResponse)
 def botTraining(request: Request):
-    return templates.TemplateResponse("trainBot.html", {"request": request,} )
+    dirs=listDirs()
+    return templates.TemplateResponse("trainBot.html", {"request": request,"dirs":dirs} )
 
 @app.get("/createQuestion",response_class=HTMLResponse)
 def createAiQuestion(request:Request):
@@ -36,8 +48,13 @@ def createAiQuestion(request:Request):
 
     return templates.TemplateResponse("trainBot.html", {"request": request,"response":response.output_text} )
 
-@app.post("/readDraggedFile",response_class=HTMLResponse)
-async def uploadDraggedFile(file:UploadFile):
+@app.post("/uploadDraggedFile",response_class=HTMLResponse)
+async def uploadDraggedFile(inp:UploadFile):
+     print(inp)
+     
+
+@app.post("/uploadFile",response_class=HTMLResponse)
+async def uploadSelectedFile(file:UploadFile):
         file_path = os.getcwd()+"\\"+file.filename
         try:
             with open(file_path, "wb") as f:
