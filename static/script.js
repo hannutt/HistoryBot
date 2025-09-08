@@ -1,21 +1,21 @@
 function createTextBox(cb) {
-    console.log(cb)
-    if (cb) {
-        document.getElementById("dataField").hidden=false
-        document.getElementById("drop-zone").hidden=false
-        var aiGenerate = document.createElement("button")
-        aiGenerate.id = "aiBtn"
-        aiGenerate.setAttribute("class","button-42")
-        aiGenerate.textContent = "Generate with AI"
-        document.getElementById("dataField").appendChild(aiGenerate)
-        
-    }
-    if (cb === false) {
-        document.getElementById("drop-zone").hidden=true
-        document.getElementById("dataField").hidden=true
-        document.getElementById("dataField").removeChild(document.getElementById("aiBtn"))
+  console.log(cb)
+  if (cb) {
+    document.getElementById("dataField").hidden = false
+    document.getElementById("drop-zone").hidden = false
+    var aiGenerate = document.createElement("button")
+    aiGenerate.id = "aiBtn"
+    aiGenerate.setAttribute("class", "button-42")
+    aiGenerate.textContent = "Generate with AI"
+    document.getElementById("dataField").appendChild(aiGenerate)
 
-    }
+  }
+  if (cb === false) {
+    document.getElementById("drop-zone").hidden = true
+    document.getElementById("dataField").hidden = true
+    document.getElementById("dataField").removeChild(document.getElementById("aiBtn"))
+
+  }
 
 }
 const dropZone = document.getElementById("drop-zone");
@@ -35,7 +35,7 @@ function dropHandler(ev) {
   let result = "";
   //raahatun tiedoston nimi
   files = ev.dataTransfer.files;
-  
+
   // Use DataTransferItemList interface to access the file(s)
   [...ev.dataTransfer.items].forEach((item, i) => {
     // If dropped items aren't files, reject them
@@ -45,34 +45,82 @@ function dropHandler(ev) {
     }
   });
   output.textContent = result;
-  fileInput.filename=files
-  
+  fileInput.filename = files
+
 
 }
+function endDate() {
+  var ed = document.getElementById("endDate").value
+  var endArray = ed.split("-")
+  return endArray
+
+}
+
+function startDate() {
+  var sd = document.getElementById("startDate").value
+  var startArray = sd.split("-")
+  return startArray
+}
+function fetchData() {
+
+  $(function () {
+    jQuery.get('/static/apikey.txt', function (data) {
+      var apk = data
+      connect(apk)
+
+
+
+    });
+  })
+}
+function connect(apk) {
+  var dates = startDate()
+  console.log(dates)
+  var options = {
+    method: 'GET',
+    headers: { 'x-api-key': apk }
+  }
+
+  var url = `https://api.api-ninjas.com/v1/historicalevents?text=ukraine&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
+
+
+  fetch(url, options)
+    .then(res => res.json()) // parse response as JSON
+    .then(data => {
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(`error ${err}`)
+    });
+
+
+
+}
+
 function listDirs() {
- 
-  var dirs=document.getElementById("dirs").innerText
+
+  var dirs = document.getElementById("dirs").innerText
   //pilkotaan kansiot , merkin kohdalta omiksi lista-alkioiksi dirArray listaan
-  var dirArray=dirs.split(",")
+  var dirArray = dirs.split(",")
   //poistetaan ' ja [ ] merkit listan alkioista. lista käydään läpi silmukassa, jolloin
   //kaikki löydetyt merkit poistetaan yhdellä kertaa.
-  for ( var i=0; i<dirArray.length;i++) {
+  for (var i = 0; i < dirArray.length; i++) {
 
-    dirArray[i]=dirArray[i].replace("'").replace("undefined","").replace("'","").replace("undefined","'")
-    .replace("[","'").replace("]","")
+    dirArray[i] = dirArray[i].replace("'").replace("undefined", "").replace("'", "").replace("undefined", "'")
+      .replace("[", "'").replace("]", "")
     console.log(dirArray[i])
   }
-    //palautetaan dirArray lista ja käytetään sitä allaolevassa jquery funktiossa.
+  //palautetaan dirArray lista ja käytetään sitä allaolevassa jquery funktiossa.
   return dirArray
 }
-$(document).ready(function(){
- $( function() {
+$(document).ready(function () {
+  $(function () {
     var availableTags = listDirs()
 
-    $( "#fpath" ).autocomplete({
+    $("#fpath").autocomplete({
       source: availableTags
-    
-    
+
+
     });
   });
 })

@@ -5,6 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <title>Training section</title>
@@ -14,7 +15,7 @@
     <h1>Train your bot</h1>
     <p id="dirs" hidden>{{dirs}}</p>
     <button onclick="listDirs()">list</button>
-    <button onclick="removeExtraMarks()">clear</button>
+
     <!--fpath eli input kentän sisältö lähetetään parametrina readfile funktiolle.-->
     <form action="/readFile/{{fpath}}">
         <input type="text" placeholder="filepath" name="fpath" id="fpath">
@@ -25,10 +26,11 @@
     </form>
     <form action="/createQuestion">
         <div id="dataField" hidden>
-            <textarea id="tbox">{{response}}</textarea>
+            <textarea id="tbox" name="tbox">{{response}}</textarea>
             <br>
         </div>
     </form>
+
     <form action="/uploadFile/{{file}}" method="post" enctype="multipart/form-data">
 
         <h2>Upload file</h2>
@@ -43,11 +45,16 @@
             <h3>Drag file</h3>
             <p id="output" name="output"></p>
             <input type="file" id="fileInput" name="fileInput">
-           
-            <button>Upload dragged file</button>
-           
-    </form>
 
+            <button>Upload dragged file</button>
+    </form>
+    </div>
+    <div>
+        <h2>Use Rest-Api</h2>
+        <label for="startDate">From:</label>
+        <input type="date" id="startDate" name="startDate" onchange="startDate()">
+        <button onclick="fetchData()">Fetch</button>
+    
     </div>
 
 

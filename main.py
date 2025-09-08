@@ -20,7 +20,7 @@ cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter'
 app=FastAPI()
 dbConn=DbConnection()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-dbConn.connect()
+
 
 templates = Jinja2Templates(directory="templates")
 
