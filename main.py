@@ -60,21 +60,29 @@ def createAiQuestion(request:Request):
 async def uploadDraggedFile(inp:UploadFile):
      print(inp)
      
-
+#
 @app.post("/uploadFile",response_class=HTMLResponse)
 async def uploadSelectedFile(file:UploadFile):
         file_path = os.getcwd()+"\\"+file.filename
+        file_path_str=str(file_path)
         try:
             with open(file_path, "wb") as f:
                     f.write(file.file.read())
-                    return"""
-                            <html>
-                                <head>
-                                <title>Success</title>
-                                </head>
-                                <body>
-                                <h1>Data successfully added to the bot</h1>
-                                </body>
+            dataFile=open(file_path_str).read()
+            print(dataFile)
+            conversations = dataFile.strip().split('\n')
+            trainer=ListTrainer(cbot)
+            trainer.train(conversations)
+                    
+            
+            return"""
+                    <html>
+                        <head>
+                            <title>Success</title>
+                            </head>
+                            <body>
+                            <h1>Data successfully added to the bot</h1>
+                            </body>
                             </html>
                             """
         except Exception as e:
@@ -109,7 +117,8 @@ async def readFile(fpath:str):
             <title>Fail</title>
         </head>
         <body>
-            <h1>Something went wrong.</h1>
+            <h1>Something went wrong.Try again</h1>
+           
         </body>
     </html>
     """

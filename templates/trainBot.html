@@ -14,8 +14,8 @@
 <body>
     <h1>Train your bot</h1>
     <p id="dirs" hidden>{{dirs}}</p>
-    <button onclick="listDirs()">list</button>
-
+    <label for="autoComplete">Use autoComplete</label>
+    <input type="checkbox" id="autoComplete" name="autoComplete" onchange="autoCompleteText(document.getElementById('autoComplete').checked)">
     <!--fpath eli input kentän sisältö lähetetään parametrina readfile funktiolle.-->
     <form action="/readFile/{{fpath}}">
         <input type="text" placeholder="filepath" name="fpath" id="fpath">

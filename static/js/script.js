@@ -1,3 +1,4 @@
+
 function createTextBox(cb) {
   console.log(cb)
   if (cb) {
@@ -51,7 +52,8 @@ function dropHandler(ev) {
 }
 var selected=""
 function getSelectedOption(sel) {
-  var selected=document.getElementById("topics").value = sel.options[sel.selectedIndex].text
+
+  selected=document.getElementById("topics").value = sel.options[sel.selectedIndex].text
   
 
     
@@ -108,13 +110,16 @@ function listDirs() {
   for (var i = 0; i < dirArray.length; i++) {
 
     dirArray[i] = dirArray[i].replace("'").replace("undefined", "").replace("'", "").replace("undefined", "'")
-      .replace("[", "'").replace("]", "")
+      .replace("[", "'").replace("]", "").replace("\\","")
     console.log(dirArray[i])
   }
   //palautetaan dirArray lista ja käytetään sitä allaolevassa jquery funktiossa.
   return dirArray
 }
-$(document).ready(function () {
+
+function autoCompleteText(cb) {
+  if (cb) {
+    $(document).ready(function () {
   $(function () {
     var availableTags = listDirs()
 
@@ -125,4 +130,16 @@ $(document).ready(function () {
     });
   });
 })
+
+  } if(cb===false) {
+      $("#fpath").autocomplete({
+            disabled: true
+        });
+
+    }
+  }
+
+
+
+
 

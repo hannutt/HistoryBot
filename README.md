@@ -19,6 +19,9 @@ ENTERING DATA BY GIVING FILE PATH AND NAME
 The frontend has an HTML input field where the user can enter the path and filename of the file containing the training data. Currently, it only accepts .txt files.
 The text is read from the file using Python's Open and read methods, and then passed to Chatterbot's ListTrainer method. ListTrainer stores the data in an SQLite database.
 
+ENTERING DATA FROM A UPLOADED FILE
+
+The user can select a file using the file selection dialog. Once the file is selected, the file is loaded into the application's root directory and the data is read from the file. After reading, the data is passed to the Chatterbot using the ListTrainer method. The upload is done using the HTML input type=file attribute and the FastApi uploadFile class.
 
 ENTERING DATA RETRIEVED FROM REST API
 
