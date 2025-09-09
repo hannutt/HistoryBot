@@ -51,14 +51,22 @@
     </div>
     <div>
         <h2>Use Rest-Api</h2>
+        <select name="topics" id="topics" onchange="getSelectedOption(document.getElementById('topics'))">
+            <option>Select topic</option>
+            <option>General history</option>
+            <option>War history</option>
+        </select>
         <label for="startDate">From:</label>
         <input type="date" id="startDate" name="startDate" onchange="startDate()">
         <button onclick="fetchData()">Fetch</button>
+        <br>
+        <textarea id="apiText" name="apiText"></textarea>
     
     </div>
 
 
-    <script src="/static/script.js"></script>
+    <script src="/static/js/script.js"></script>
+
 
 </body>
 

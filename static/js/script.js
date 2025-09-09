@@ -49,11 +49,12 @@ function dropHandler(ev) {
 
 
 }
-function endDate() {
-  var ed = document.getElementById("endDate").value
-  var endArray = ed.split("-")
-  return endArray
+var selected=""
+function getSelectedOption(sel) {
+  var selected=document.getElementById("topics").value = sel.options[sel.selectedIndex].text
+  
 
+    
 }
 
 function startDate() {
@@ -64,6 +65,7 @@ function startDate() {
 function fetchData() {
 
   $(function () {
+    //haetaan apikey tekstitiedostosta
     jQuery.get('/static/apikey.txt', function (data) {
       var apk = data
       connect(apk)
@@ -74,6 +76,7 @@ function fetchData() {
   })
 }
 function connect(apk) {
+
   var dates = startDate()
   console.log(dates)
   var options = {
@@ -81,24 +84,22 @@ function connect(apk) {
     headers: { 'x-api-key': apk }
   }
 
-  var url = `https://api.api-ninjas.com/v1/historicalevents?text=ukraine&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
+  var url = `https://api.api-ninjas.com/v1/historicalevents?text=${selected}&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
 
 
   fetch(url, options)
     .then(res => res.json()) // parse response as JSON
     .then(data => {
       console.log(data)
+      //näytetään textareassa vain event-property eli tapahtumat, ei päivämääriä yms.
+      document.getElementById("apiText").value=data[0].event
     })
     .catch(err => {
       console.log(`error ${err}`)
     });
-
-
-
 }
 
 function listDirs() {
-
   var dirs = document.getElementById("dirs").innerText
   //pilkotaan kansiot , merkin kohdalta omiksi lista-alkioiksi dirArray listaan
   var dirArray = dirs.split(",")
