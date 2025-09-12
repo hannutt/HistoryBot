@@ -6,9 +6,7 @@ ABOUT THE APP
 
 A browser-based machine learning application where the user can train a ChatterBot-based chatbot 
 (https://pypi.org/project/ChatterBot/) using prompts, files, and artificial intelligence. In this example, the bot is trained to answer only historical questions. The backend of the application is built with Python's FastApi framework, and the frontend is built with Vanilla JavaScript and HTML.
-
-AI features are implemented with the official OpenAI API Python library:
-https://github.com/openai/openai-python
+AI features are built using JavaScript and the OpenAI REST API.
 
 ENTERING TRAINING DATA TO THE BOT
 
@@ -29,4 +27,4 @@ The application has integration with Api-Ninja's historical events API. The user
 
 Creating training data using AI
 
-The application uses the official OpenAI Python library to generate historical training data for the chatterbot. The OpenAI client has an input parameter set to "create historical question with answer". This allows the client to generate only historically relevant question-answer pairs.
+The application has integration with the OpenAI GPT REST API. Communication between the application and the GPT API is done using the JavaScript Fetch method. Rest-Api question-answer pairs are limited to historical events only using the content property, which is given the value: "create short history question with answer"

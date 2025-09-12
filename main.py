@@ -47,14 +47,7 @@ def botTraining(request: Request):
     dirs=listDirs()
     return templates.TemplateResponse("trainBot.html", {"request": request,"dirs":dirs} )
 
-@app.get("/createQuestion",response_class=HTMLResponse)
-def createAiQuestion(request:Request):
-    client = OpenAI(api_key=os.environ.get("apk"),)
-    response = client.responses.create(
-    model="gpt-4o",
-    input="create history question with answer",)
 
-    return templates.TemplateResponse("trainBot.html", {"request": request,"response":response.output_text} )
 
 @app.post("/uploadDraggedFile",response_class=HTMLResponse)
 async def uploadDraggedFile(inp:UploadFile):
@@ -88,9 +81,12 @@ async def uploadSelectedFile(file:UploadFile):
         except Exception as e:
             return {"message": e.args}
         
-        
-    
-    
+
+@app.post("/getTxtAreaData",response_class=HTMLResponse)
+async def getValues(tbox:str):
+     print(tbox)
+
+     return templates.TemplateResponse("trainBot.html")
 
 @app.get("/readFile",response_class=HTMLResponse)
 #fpath on samannimisen trainbot.html input kentän sisältö.

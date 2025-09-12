@@ -10,3 +10,4 @@ __pycache__/Cbot.cpython-313.pyc
 .env
 __pycache__/mongoconnection.cpython-313.pyc
 static/apikey.txt
+static/apikey2.txt

@@ -13,6 +13,9 @@
 
 <body>
     <h1>Train your bot</h1>
+    <label for="filePrompt">Use file prompt</label>
+    <input type="checkbox" id="filePrompt" onchange="showFilePrompt(document.getElementById('filePrompt').checked)">
+    <div id="filePromptDiv" hidden>
     <p id="dirs" hidden>{{dirs}}</p>
     <label for="autoComplete">Use autoComplete</label>
     <input type="checkbox" id="autoComplete" name="autoComplete" onchange="autoCompleteText(document.getElementById('autoComplete').checked)">
@@ -20,16 +23,17 @@
     <form action="/readFile/{{fpath}}">
         <input type="text" placeholder="filepath" name="fpath" id="fpath">
         <button class="button-42">Read file</button><br>
+        </div>
         <label for="createTrainingData">Add own data</label>
         <input type="checkbox" id="createTrainingData"
             onchange="createTextBox(document.getElementById('createTrainingData').checked)">
     </form>
-    <form action="/createQuestion">
         <div id="dataField" hidden>
             <textarea id="tbox" name="tbox">{{response}}</textarea>
             <br>
         </div>
-    </form>
+    
+    
 
     <form action="/uploadFile/{{file}}" method="post" enctype="multipart/form-data">
 
@@ -64,7 +68,7 @@
     
     </div>
 
-
+    <script src="/static/js/options.js"></script>
     <script src="/static/js/script.js"></script>
 
 

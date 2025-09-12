@@ -8,6 +8,7 @@ function createTextBox(cb) {
     aiGenerate.id = "aiBtn"
     aiGenerate.setAttribute("class", "button-42")
     aiGenerate.textContent = "Generate with AI"
+    aiGenerate.addEventListener("click",createAiQuestion)
     document.getElementById("dataField").appendChild(aiGenerate)
 
   }
