@@ -3,23 +3,24 @@ function createTextBox(cb) {
   console.log(cb)
   if (cb) {
     document.getElementById("dataField").hidden = false
-    document.getElementById("drop-zone").hidden = false
+  
     var aiGenerate = document.createElement("button")
     aiGenerate.id = "aiBtn"
-    aiGenerate.setAttribute("class", "button-42")
+    //aiGenerate.setAttribute("class", "button-42")
     aiGenerate.textContent = "Generate with AI"
     aiGenerate.addEventListener("click",createAiQuestion)
     document.getElementById("dataField").appendChild(aiGenerate)
 
   }
   if (cb === false) {
-    document.getElementById("drop-zone").hidden = true
+   
     document.getElementById("dataField").hidden = true
     document.getElementById("dataField").removeChild(document.getElementById("aiBtn"))
 
   }
 
 }
+/*
 const dropZone = document.getElementById("drop-zone");
 const output = document.getElementById("output");
 const fileInput = document.getElementById("fileInput")
@@ -50,14 +51,12 @@ function dropHandler(ev) {
   fileInput.filename = files
 
 
-}
+}*/
+
 var selected=""
 function getSelectedOption(sel) {
 
   selected=document.getElementById("topics").value = sel.options[sel.selectedIndex].text
-  
-
-    
 }
 
 function startDate() {
@@ -72,14 +71,11 @@ function fetchData() {
     jQuery.get('/static/apikey.txt', function (data) {
       var apk = data
       connect(apk)
-
-
-
     });
   })
 }
-function connect(apk) {
 
+function connect(apk) {
   var dates = startDate()
   console.log(dates)
   var options = {
@@ -95,7 +91,7 @@ function connect(apk) {
     .then(data => {
       console.log(data)
       //näytetään textareassa vain event-property eli tapahtumat, ei päivämääriä yms.
-      document.getElementById("apiText").value=data[0].event
+      //document.getElementById("apiText").value=data[0].event
     })
     .catch(err => {
       console.log(`error ${err}`)

@@ -5,12 +5,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
+from fastapi.responses import RedirectResponse
 from openai import OpenAI
 from dotenv import load_dotenv, dotenv_values
 from mongoconnection import DbConnection
-
-
-
 load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
@@ -36,8 +34,15 @@ def listDirs():
             #ja tallentaisi / palauttaisi vain yhden kansion.
         return dirs
      
+@app.get("/error",response_class=HTMLResponse)
+def errPage(request:Request):
+     return templates.TemplateResponse("error.html", {"request": request,} )
      
 
+@app.get("/success",response_class=HTMLResponse)
+def successPage(request:Request):
+     return templates.TemplateResponse("success.html", {"request": request,} )
+     
 @app.get("/",response_class=HTMLResponse)
 def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request,} )
@@ -47,13 +52,7 @@ def botTraining(request: Request):
     dirs=listDirs()
     return templates.TemplateResponse("trainBot.html", {"request": request,"dirs":dirs} )
 
-
-
-@app.post("/uploadDraggedFile",response_class=HTMLResponse)
-async def uploadDraggedFile(inp:UploadFile):
-     print(inp)
      
-#
 @app.post("/uploadFile",response_class=HTMLResponse)
 async def uploadSelectedFile(file:UploadFile):
         file_path = os.getcwd()+"\\"+file.filename
@@ -66,27 +65,12 @@ async def uploadSelectedFile(file:UploadFile):
             conversations = dataFile.strip().split('\n')
             trainer=ListTrainer(cbot)
             trainer.train(conversations)
-                    
-            
-            return"""
-                    <html>
-                        <head>
-                            <title>Success</title>
-                            </head>
-                            <body>
-                            <h1>Data successfully added to the bot</h1>
-                            </body>
-                            </html>
-                            """
-        except Exception as e:
-            return {"message": e.args}
+            return RedirectResponse(url=f"/success/", status_code=200)
+                            
+        except: 
+            return RedirectResponse(url=f"/error/", status_code=303)
         
 
-@app.post("/getTxtAreaData",response_class=HTMLResponse)
-async def getValues(tbox:str):
-     print(tbox)
-
-     return templates.TemplateResponse("trainBot.html")
 
 @app.get("/readFile",response_class=HTMLResponse)
 #fpath on samannimisen trainbot.html input kentän sisältö.
@@ -96,28 +80,12 @@ async def readFile(fpath:str):
         conversations = dataFile.strip().split('\n')
         trainer=ListTrainer(cbot)
         trainer.train(conversations)
-        return """
-    <html>
-        <head>
-            <title>Success</title>
-        </head>
-        <body>
-            <h1>Data successfully added to the bot</h1>
-        </body>
-    </html>
-    """
+        return RedirectResponse(url=f"/success/", status_code=200)
+    
     except:
-        return """
-    <html>
-        <head>
-            <title>Fail</title>
-        </head>
-        <body>
-            <h1>Something went wrong.Try again</h1>
-           
-        </body>
-    </html>
-    """
+         return RedirectResponse(url=f"/error/", status_code=303)
+    
+
 
    
     
