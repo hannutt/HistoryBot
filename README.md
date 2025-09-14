@@ -12,6 +12,11 @@ ENTERING TRAINING DATA TO THE BOT
 
 The application offers several ways to input training data into the bot. The methods are described below.
 
+PARSING DATA BEFORE ENTERING
+
+The application can remove certain parts of the training data file before passing it to the chatterbot. The HTML user interface has a file parsing checkbox. Clicking on it creates an input field where the user can type comma-separated words to be removed from the file.
+The words to be removed are passed to a Python function, which creates a list of them using the split method. The text in the file is then compared to the words in the list and the found words are removed using the replace method.
+
 ENTERING DATA BY GIVING FILE PATH AND NAME
 
 The frontend has an HTML input field where the user can enter the path and filename of the file containing the training data. Currently, it only accepts .txt files.
@@ -28,3 +33,11 @@ The application has integration with Api-Ninja's historical events API. The user
 Creating training data using AI
 
 The application has integration with the OpenAI GPT REST API. Communication between the application and the GPT API is done using the JavaScript Fetch method. Rest-Api question-answer pairs are limited to historical events only using the content property, which is given the value: "create short history question with answer"
+
+CHATTING FEATURES
+
+Chatting with the bot is done using an HTML input field where the user types a question. After typing, the user clicks the HTML submit button and the user's sentence is sent to a Python function that communicates with the chatterbot instance. The bot tries to find the correct answer and sends it back using the get_response method.
+
+CONVERTING ANSWER TO SPEECH
+
+The bot's response can be converted from text to speech. The conversion is done using the JavaScript SpeechSynthesisUtterance API.

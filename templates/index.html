@@ -11,7 +11,23 @@
     <form action="{{ url_for('botTraining') }}">
         <button>Start training</button>
     </form>
-    <h2>Ask</h2>
+    <h2>Chat with bot</h2>
+    <div>
+        <label for="openChat">Start chatting</label>
+        <input type="checkbox" id="openChat" name="openChat">
+        <div id="chatting">
+            <form action="/chatting" method="post">
+            <input type="text" id="userInput" name="userInput">
+            <br>
+            <button id="userInputBtn" name="userInputBtn">Send</button>
+            <p id="botAnswer" name="botAnswer">{{response}}</p>
+            </form>
+            <div>
+                <button><img id="speak" src="/static/icons/voice24px.png"></button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/options.js"></script>
 </body>
 
 </html>

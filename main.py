@@ -12,7 +12,7 @@ from mongoconnection import DbConnection
 load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
-             database_uri='sqlite:///database.sqlite3',logic_adapters=["chatterbot.logic.TimeLogicAdapter"])
+             database_uri='sqlite:///database.sqlite3')
 
 
 app=FastAPI()
@@ -61,7 +61,6 @@ async def uploadSelectedFile(file:UploadFile):
             with open(file_path, "wb") as f:
                     f.write(file.file.read())
             dataFile=open(file_path_str).read()
-            print(dataFile)
             conversations = dataFile.strip().split('\n')
             trainer=ListTrainer(cbot)
             trainer.train(conversations)
@@ -72,18 +71,41 @@ async def uploadSelectedFile(file:UploadFile):
         
 
 
-@app.get("/readFile",response_class=HTMLResponse)
-#fpath on samannimisen trainbot.html input kentän sisältö.
-async def readFile(fpath:str):
-    try:
+@app.post("/readFile",response_class=HTMLResponse)
+#fpath on samannimisen trainbot.html input kentän sisältö, parsefile on samanniminen checkbox
+async def readFile(request: Request,fpath:str=Form(...),items:str=Form(...),parseFile:bool=Form(False)):
+    itemList=items.split(",")
+
+    #jos html-checkbox on valittu
+    if parseFile:
+        # tiedostopolku+tiedoston
         dataFile=open(fpath).read()
+        for i in itemList:
+             dataFile=dataFile.replace(i,"")
+             
         conversations = dataFile.strip().split('\n')
         trainer=ListTrainer(cbot)
         trainer.train(conversations)
-        return RedirectResponse(url=f"/success/", status_code=200)
+      
+    else:
+         dataFile=open(fpath).read()
+         conversations = dataFile.strip().split('\n')
+         trainer=ListTrainer(cbot)
+         trainer.train(conversations)
+
+    return templates.TemplateResponse("trainBot.html", {"request": request} )
+
+@app.post("/chatting",response_class=HTMLResponse)
+async def createAnswer(request:Request,userInput:str=Form(...)):
+     response=cbot.get_response(userInput)
+     return templates.TemplateResponse("index.html", {"request": request,"response":response} )
+
+         
     
-    except:
-         return RedirectResponse(url=f"/error/", status_code=303)
+    
+    
+
+          
     
 
 

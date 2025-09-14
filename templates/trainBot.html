@@ -21,7 +21,7 @@
             onchange="createTextBox(document.getElementById('createTrainingData').checked)">
         <label for="fUpload">Upload file</label>
         <input type="checkbox" id="fUpload" onchange="showFileUpload(document.getElementById('fUpload').checked)">
-          <label for="api">Use Rest-API</label>
+        <label for="api">Use Rest-API</label>
         <input type="checkbox" id="api" onchange="showRestApi(document.getElementById('api').checked)">
     </div>
     <div id="filePromptDiv" hidden>
@@ -29,18 +29,20 @@
         <label for="autoComplete">Use autoComplete</label>
         <input type="checkbox" id="autoComplete" name="autoComplete"
             onchange="autoCompleteText(document.getElementById('autoComplete').checked)">
+
         <!--fpath eli input kentän sisältö lähetetään parametrina readfile funktiolle.-->
-        <form action="/readFile/{{fpath}}">
+        <form action="/readFile" method="post">
             <input type="text" placeholder="filepath" name="fpath" id="fpath">
-            <button>Read file</button><br>
+            <input type="submit" value="Read file"><br>
+            <label for="parseFile">Parse file</label>
+            <input type="checkbox" id="parseFile" name="parseFile" value="True"
+                onclick="showParse(document.getElementById('parseFile').checked)">
+            <div id="parse" hidden>
+                <input type="text" id="items" name="items" placeholder="separate items with , mark">
         </form>
     </div>
-    <!--
-    <div>
-        <label for="createTrainingData">Generate data with OpenAI</label>
-        <input type="checkbox" id="createTrainingData"
-            onchange="createTextBox(document.getElementById('createTrainingData').checked)">
-    </div>-->
+    </div>
+
     <div id="dataField" hidden>
         <textarea id="tbox" name="tbox">{{response}}</textarea>
         <br>
@@ -55,7 +57,7 @@
         </form>
     </div>
 
-   
+
     <div id="restapi" hidden>
         <h2>Use Rest-Api</h2>
         <select name="topics" id="topics" onchange="getSelectedOption(document.getElementById('topics'))">

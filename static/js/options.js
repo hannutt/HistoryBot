@@ -29,6 +29,24 @@ function showRestApi(cb) {
     }
 
 }
+function showParse(cb) {
+       if (cb) {
+        document.getElementById("parse").hidden = false
+    }
+    else {
+        document.getElementById("parse").hidden = true
+
+    }
+
+}
+document.getElementById("speak").addEventListener("click",speak)
+function speak() {
+    var textToSpeech=document.getElementById("botAnswer").innerText
+    var speechSynth = window.speechSynthesis;
+    var newUtter = new SpeechSynthesisUtterance(textToSpeech);
+    speechSynth.speak(newUtter);
+    
+}
 
 
 
