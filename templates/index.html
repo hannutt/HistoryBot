@@ -17,13 +17,19 @@
         <input type="checkbox" id="openChat" name="openChat">
         <div id="chatting">
             <form action="/chatting" method="post">
-            <input type="text" id="userInput" name="userInput">
-            <br>
-            <button id="userInputBtn" name="userInputBtn">Send</button>
-            <p id="botAnswer" name="botAnswer">{{response}}</p>
+                <input type="text" id="userInput" name="userInput">
+                <br>
+                <button id="userInputBtn" name="userInputBtn">Send</button>
+                <p id="botAnswer" name="botAnswer">{{response}}</p>
             </form>
             <div>
-                <button><img id="speak" src="/static/icons/voice24px.png"></button>
+                <label for="languages">Choose a car:</label>
+
+                <select name="languages" id="languages" onchange="selectLanguage()">
+                    <option value="en-US">en-US</option>
+                    <option value="en-GB">UK english</option>
+                </select>
+                <button><img id="speak" src="/static/icons/voice24px.png" onclick="speak()"></button>
             </div>
         </div>
     </div>

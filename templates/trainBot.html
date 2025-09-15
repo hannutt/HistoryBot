@@ -60,12 +60,17 @@
 
     <div id="restapi" hidden>
         <h2>Use Rest-Api</h2>
-        <select name="topics" id="topics" onchange="getSelectedOption(document.getElementById('topics'))">
+        <select name="topics" id="topics" onchange="getSelectedOption()">
             <option>Select topic</option>
             <option>General history</option>
             <option>War history</option>
             <option>Finance history</option>
         </select>
+        <br>
+        <label for="apiPromptCB">Write own topic</label>
+        <input type="checkbox" id="apiPromptCB" name="apiPromptCB" onchange="writeApiPrompt()">
+        <br>
+        <input type="text" id="apiPrompt" name="apiPrompt" hidden placeholder="Your topic">
         <label for="startDate">From:</label>
         <input type="date" id="startDate" name="startDate" onchange="startDate()">
         <button onclick="fetchData()">Fetch</button>

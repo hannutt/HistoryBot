@@ -28,7 +28,7 @@ The user can select a file using the file selection dialog. Once the file is sel
 
 ENTERING DATA RETRIEVED FROM REST API
 
-The application has integration with Api-Ninja's historical events API. The user can retrieve training data from the API by selecting a topic from the HTML select component and entering a date to retrieve historical events. The retrieved data is passed to the chatterbot using the ListTrainer method. Communication between the API and the application is done using the JavaScript fetch method.
+The application has integration with Api-Ninja's historical events API. The user can retrieve training data from the API by selecting a topic from the HTML selector component or by writing their own topic in the HTML input field and entering a date to retrieve historical events. The retrieved data is passed to the chatterbot using the ListTrainer method. Communication between the API and the application is done using the JavaScript fetch method.
 
 Creating training data using AI
 

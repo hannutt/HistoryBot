@@ -30,7 +30,7 @@ function showRestApi(cb) {
 
 }
 function showParse(cb) {
-       if (cb) {
+    if (cb) {
         document.getElementById("parse").hidden = false
     }
     else {
@@ -39,13 +39,23 @@ function showParse(cb) {
     }
 
 }
-document.getElementById("speak").addEventListener("click",speak)
+function selectLanguage() {
+    var selectElement=document.getElementById("languages")
+    var selectedLang = selectElement.value
+    console.log(selectedLang)
+    return selectedLang
+
+}
+
 function speak() {
-    var textToSpeech=document.getElementById("botAnswer").innerText
+    var speakLang=selectLanguage()
+    var textToSpeech = document.getElementById("botAnswer").innerText
     var speechSynth = window.speechSynthesis;
     var newUtter = new SpeechSynthesisUtterance(textToSpeech);
+    newUtter.lang=speakLang
     speechSynth.speak(newUtter);
     
+
 }
 
 

@@ -3,60 +3,38 @@ function createTextBox(cb) {
   console.log(cb)
   if (cb) {
     document.getElementById("dataField").hidden = false
-  
+
     var aiGenerate = document.createElement("button")
     aiGenerate.id = "aiBtn"
     //aiGenerate.setAttribute("class", "button-42")
     aiGenerate.textContent = "Generate with AI"
-    aiGenerate.addEventListener("click",createAiQuestion)
+    aiGenerate.addEventListener("click", createAiQuestion)
     document.getElementById("dataField").appendChild(aiGenerate)
 
   }
   if (cb === false) {
-   
+
     document.getElementById("dataField").hidden = true
     document.getElementById("dataField").removeChild(document.getElementById("aiBtn"))
 
   }
 
 }
-/*
-const dropZone = document.getElementById("drop-zone");
-const output = document.getElementById("output");
-const fileInput = document.getElementById("fileInput")
-var files;
-dropZone.addEventListener("drop", dropHandler);
-window.addEventListener("dragover", (e) => {
-  e.preventDefault();
-});
-window.addEventListener("drop", (e) => {
-  e.preventDefault();
-});
-function dropHandler(ev) {
-  // Prevent default behavior (Prevent file from being opened)
-  ev.preventDefault();
-  let result = "";
-  //raahatun tiedoston nimi
-  files = ev.dataTransfer.files;
+function writeApiPrompt() {
+  cb = document.getElementById("apiPromptCB").checked
+  if (cb) {
+    document.getElementById("apiPrompt").hidden = false
+  }
+  else {
+    document.getElementById("apiPrompt").hidden = true
+  }
+  return cb
+}
 
-  // Use DataTransferItemList interface to access the file(s)
-  [...ev.dataTransfer.items].forEach((item, i) => {
-    // If dropped items aren't files, reject them
-    if (item.kind === "file") {
-      const file = item.getAsFile();
-      result += `${file.name}\n`;
-    }
-  });
-  output.textContent = result;
-  fileInput.filename = files
-
-
-}*/
-
-var selected=""
-function getSelectedOption(sel) {
-
-  selected=document.getElementById("topics").value = sel.options[sel.selectedIndex].text
+function getSelectedOption() {
+  selected = document.getElementById("topics")
+  var selectedTopic = selected.options[selected.selectedIndex].text;
+  return selectedTopic
 }
 
 function startDate() {
@@ -76,15 +54,23 @@ function fetchData() {
 }
 
 function connect(apk) {
+  var url = ""
   var dates = startDate()
-  console.log(dates)
+  var topic = getSelectedOption()
+  var apiCB = writeApiPrompt()
   var options = {
     method: 'GET',
     headers: { 'x-api-key': apk }
   }
+  if (apiCB) {
+    var userInput = document.getElementById("apiPrompt").value
+    url = `https://api.api-ninjas.com/v1/historicalevents?text=${userInput}&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
 
-  var url = `https://api.api-ninjas.com/v1/historicalevents?text=${selected}&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
+  }
+  else {
+    url = `https://api.api-ninjas.com/v1/historicalevents?text=${topic}&year=${dates[0]}&month=${dates[1]}&day=${dates[2]}`
 
+  }
 
   fetch(url, options)
     .then(res => res.json()) // parse response as JSON
@@ -107,7 +93,7 @@ function listDirs() {
   for (var i = 0; i < dirArray.length; i++) {
 
     dirArray[i] = dirArray[i].replace("'").replace("undefined", "").replace("'", "").replace("undefined", "'")
-      .replace("[", "'").replace("]", "").replace("\\","")
+      .replace("[", "'").replace("]", "").replace("\\", "")
     console.log(dirArray[i])
   }
   //palautetaan dirArray lista ja käytetään sitä allaolevassa jquery funktiossa.
@@ -117,24 +103,24 @@ function listDirs() {
 function autoCompleteText(cb) {
   if (cb) {
     $(document).ready(function () {
-  $(function () {
-    var availableTags = listDirs()
+      $(function () {
+        var availableTags = listDirs()
 
-    $("#fpath").autocomplete({
-      source: availableTags
+        $("#fpath").autocomplete({
+          source: availableTags
 
 
-    });
-  });
-})
-
-  } if(cb===false) {
-      $("#fpath").autocomplete({
-            disabled: true
         });
+      });
+    })
 
-    }
+  } if (cb === false) {
+    $("#fpath").autocomplete({
+      disabled: true
+    });
+
   }
+}
 
 
 

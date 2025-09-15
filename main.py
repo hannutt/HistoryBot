@@ -6,7 +6,6 @@ from fastapi.templating import Jinja2Templates
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from fastapi.responses import RedirectResponse
-from openai import OpenAI
 from dotenv import load_dotenv, dotenv_values
 from mongoconnection import DbConnection
 load_dotenv() 
@@ -80,7 +79,9 @@ async def readFile(request: Request,fpath:str=Form(...),items:str=Form(...),pars
     if parseFile:
         # tiedostopolku+tiedoston
         dataFile=open(fpath).read()
+        #listan merkkien läpikäynti i on vuorollaan jokainen alkio
         for i in itemList:
+             #korvataan listalla olevat sanat tekstistä tyhjällä.
              dataFile=dataFile.replace(i,"")
              
         conversations = dataFile.strip().split('\n')
