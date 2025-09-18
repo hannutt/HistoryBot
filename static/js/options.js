@@ -6,10 +6,20 @@ function showFilePrompt(cb) {
         document.getElementById("filePromptDiv").hidden = true
 
     }
+}
 
+function showCsv(cb) {
+    if (cb) {
+        document.getElementById("fileUploadCsv").hidden=false
+    }
+    else {
+        document.getElementById("fileUploadCsv").hidden=true
+
+    }
 }
 
 function showFileUpload(cb) {
+    console.log(cb)
     if (cb) {
         document.getElementById("fileUpload").hidden = false
     }

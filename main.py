@@ -1,4 +1,5 @@
 import os
+import pathlib
 from fastapi import FastAPI, Form,Request,UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +9,8 @@ from chatterbot.trainers import ListTrainer
 from fastapi.responses import RedirectResponse
 from dotenv import load_dotenv, dotenv_values
 from mongoconnection import DbConnection
+import pandas as pd
+
 load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
@@ -51,22 +54,39 @@ def botTraining(request: Request):
     dirs=listDirs()
     return templates.TemplateResponse("trainBot.html", {"request": request,"dirs":dirs} )
 
-     
+ 
+
+@app.post("/uploadCsv",response_class=HTMLResponse)
+async def uploadScvFile(request:Request,csvfile:UploadFile):
+     file_path = os.getcwd()+"\\"+csvfile.filename
+     with open(file_path, "wb") as f:
+          #csvfile = pelkkä tiedoston nimi
+          f.write(csvfile.file.read())
+          #filepath on polku ja tiedosto
+     df = pd.read_csv(file_path,skipinitialspace=True)
+     print(df.to_string()) 
+
+     return templates.TemplateResponse("trainBot.html",{"request":request})
+
 @app.post("/uploadFile",response_class=HTMLResponse)
-async def uploadSelectedFile(file:UploadFile):
+async def uploadSelectedFile(request: Request,file:UploadFile):
+        #sovelluksen polku, jonne uploadattu tiedosto talletetaan
         file_path = os.getcwd()+"\\"+file.filename
+        #selvitetään tiedostopääte
         file_path_str=str(file_path)
         try:
             with open(file_path, "wb") as f:
-                    f.write(file.file.read())
+                f.write(file.file.read())
             dataFile=open(file_path_str).read()
+            #strip poistaa välilyönnit tekstin edestä ja lopusta, split jakaa tekstin lista-alkioiksi
+            #rivivaihdon kohdalta.
             conversations = dataFile.strip().split('\n')
             trainer=ListTrainer(cbot)
             trainer.train(conversations)
-            return RedirectResponse(url=f"/success/", status_code=200)
-                            
-        except: 
-            return RedirectResponse(url=f"/error/", status_code=303)
+        except:
+                return RedirectResponse(url=f"/error/", status_code=303)
+        return templates.TemplateResponse("trainBot.html", {"request": request} )
+        
         
 
 

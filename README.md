@@ -5,7 +5,7 @@ Project keywords: Python FastApi, JavaScript, Machine Learning, OpenAI API, Pyth
 ABOUT THE APP
 
 A browser-based machine learning application where the user can train a ChatterBot-based chatbot 
-(https://pypi.org/project/ChatterBot/) using prompts, files, and artificial intelligence. In this example, the bot is trained to answer only historical questions. The backend of the application is built with Python's FastApi framework, and the frontend is built with Vanilla JavaScript and HTML.
+(https://pypi.org/project/ChatterBot/) using prompts, text & CSV files, and artificial intelligence. In this example, the bot is trained to answer only historical questions. The backend of the application is built with Python's FastApi framework, and the frontend is built with Vanilla JavaScript and HTML.
 AI features are built using JavaScript and the OpenAI REST API.
 
 ENTERING TRAINING DATA TO THE BOT
