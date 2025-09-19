@@ -38,12 +38,9 @@ DELETING OR MODIFYING STORED DATA
 
 As mentioned earlier, all entered training data is stored in the SQLite database used by the application. The user can easily delete or edit the stored data using the application.
 
-    
-DELETE PROCEDURE
-In the Crud view, the user sees a list of saved training expressions and expression ID numbers.
-A single click on any of the displayed expressions triggers a jQuery click function that passes the SQL ID number of the clicked expression to the HTML input field. If the user wants to delete the clicked expression from the database, the deletion is performed by clicking the "Delete" button.
+In the Crud view, the user sees a list of saved training expressions and expression IDs. When the user presses the e key (e=edit) or d key (d=delete) on the keyboard and clicks with the mouse on any of the displayed expressions, a jQuery click function is triggered, which passes the clicked expression and its SQL IDs to the HTML input fields.
 
-After clicking the button, the ID number is sent via POST to a Python function that communicates with the SQLite database and performs the deletion based on the provided ID number.
+After clicking the button, the ID is sent via POST to a Python function that communicates with the SQLite database and performs the delete or update based on the ID.
 
 CHATTING FEATURES
 

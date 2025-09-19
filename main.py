@@ -165,6 +165,21 @@ async def deleteData(request:Request,field1:str=Form()):
     message=f"Data with id {sqlId} removed from database"
     return templates.TemplateResponse("success.html",{"request":request,"message":message})
 
+@app.post("/editData",response_class=HTMLResponse)
+async def editData(request:Request, field1:str=Form(...),field2:str=Form(2)):
+     
+     sqlId=field1
+     sentence=field2
+     connection_obj = sqlite3.connect('database.sqlite3')
+     cursor_obj = connection_obj.cursor()
+     sql="UPDATE statement SET text=? WHERE id=?"
+     cursor_obj.execute(sql,(sentence,sqlId))
+     connection_obj.commit()
+     connection_obj.close()
+     message=f"Data with id {sqlId} updated"
+     return templates.TemplateResponse("success.html",{"request":request,"message":message})
+
+
          
     
     
