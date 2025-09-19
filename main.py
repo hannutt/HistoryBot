@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse
 from dotenv import load_dotenv, dotenv_values
 from mongoconnection import DbConnection
 import pandas as pd
-
+import sqlite3
 load_dotenv() 
 
 cbot=ChatBot('HistoryBot',storage_adapter='chatterbot.storage.SQLStorageAdapter', 
@@ -49,8 +49,40 @@ def successPage(request:Request):
 def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request,} )
 
+#laskee statement taulun rivit
+def countSql():
+    connection_obj = sqlite3.connect('database.sqlite3')
+    cursor_obj = connection_obj.cursor()
+    sql="SELECT COUNT (*) FROM statement"
+    cursor_obj.execute(sql)
+    output=cursor_obj.fetchone()
+    connection_obj.commit()
+    connection_obj.close()
+    return output
+
+def selectTrainingData():
+    connection_obj = sqlite3.connect('database.sqlite3')
+    cursor_obj = connection_obj.cursor()
+    sql="SELECT id, text FROM statement"
+    cursor_obj.execute(sql)
+    sentences=cursor_obj.fetchall()
+    connection_obj.commit()
+    connection_obj.close()
+    return sentences
+     
+     
+
+@app.get("/crud",response_class=HTMLResponse)
+def showStatistics(request:Request):
+     #[(43,)]
+     #total=countSql()
+     savedData=selectTrainingData()
+
+     return templates.TemplateResponse("cruds.html",{"request":request,"savedData":savedData})
+
 @app.get("/train",response_class=HTMLResponse)
 def botTraining(request: Request):
+   
     dirs=listDirs()
     return templates.TemplateResponse("trainBot.html", {"request": request,"dirs":dirs} )
 
@@ -60,7 +92,7 @@ def botTraining(request: Request):
 async def uploadScvFile(request:Request,csvfile:UploadFile):
      file_path = os.getcwd()+"\\"+csvfile.filename
      with open(file_path, "wb") as f:
-          #csvfile = pelkkä tiedoston nimi
+          #csvfile = pelkkä uploadatun tiedoston nimi
           f.write(csvfile.file.read())
           #filepath on polku ja tiedosto
      df = pd.read_csv(file_path,skipinitialspace=True)
@@ -120,6 +152,18 @@ async def readFile(request: Request,fpath:str=Form(...),items:str=Form(...),pars
 async def createAnswer(request:Request,userInput:str=Form(...)):
      response=cbot.get_response(userInput)
      return templates.TemplateResponse("index.html", {"request": request,"response":response} )
+
+@app.post("/deleteData",response_class=HTMLResponse)
+async def deleteData(request:Request,field1:str=Form()):
+    sqlId=field1
+    connection_obj = sqlite3.connect('database.sqlite3')
+    cursor_obj = connection_obj.cursor()
+    sql=f"DELETE FROM statement WHERE id={sqlId}"
+    cursor_obj.execute(sql)
+    connection_obj.commit()
+    connection_obj.close()
+    message=f"Data with id {sqlId} removed from database"
+    return templates.TemplateResponse("success.html",{"request":request,"message":message})
 
          
     

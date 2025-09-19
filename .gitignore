@@ -12,3 +12,4 @@ __pycache__/mongoconnection.cpython-313.pyc
 static/apikey.txt
 static/apikey2.txt
 static/icons/voice24px.png
+database.sqlite3.db

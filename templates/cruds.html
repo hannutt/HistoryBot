@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Perfom CRUD to database data</h1>
+    <div id="stats">
+        <form action="/crud">
+            <button>Show</button>
+            {% for s in savedData %}
+            <p id={{loop.index}}>{{s}}</p>
+            {%endfor%}
+        </form>
+    </div>
+    <form action="/deleteData" method="post">
+    <div id="crudArea">
+        
+    </div>
+    </form>
+<script src="/static/js/cruds.js"></script>
+</body>
+
+</html>

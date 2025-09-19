@@ -34,6 +34,17 @@ Creating training data using AI
 
 The application has integration with the OpenAI GPT REST API. Communication between the application and the GPT API is done using the JavaScript Fetch method. Rest-Api question-answer pairs are limited to historical events only using the content property, which is given the value: "create short history question with answer"
 
+DELETING OR MODIFYING STORED DATA
+
+As mentioned earlier, all entered training data is stored in the SQLite database used by the application. The user can easily delete or edit the stored data using the application.
+
+    
+DELETE PROCEDURE
+In the Crud view, the user sees a list of saved training expressions and expression ID numbers.
+A single click on any of the displayed expressions triggers a jQuery click function that passes the SQL ID number of the clicked expression to the HTML input field. If the user wants to delete the clicked expression from the database, the deletion is performed by clicking the "Delete" button.
+
+After clicking the button, the ID number is sent via POST to a Python function that communicates with the SQLite database and performs the deletion based on the provided ID number.
+
 CHATTING FEATURES
 
 Chatting with the bot is done using an HTML input field where the user types a question. After typing, the user clicks the HTML submit button and the user's sentence is sent to a Python function that communicates with the chatterbot instance. The bot tries to find the correct answer and sends it back using the get_response method.
